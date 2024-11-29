@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Home Page</title>
+    <style type="">
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #f0f0f0;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #141e30, #243b55);
+        }
+        .container {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .links {
+            background: linear-gradient(135deg, #66a6ff, #89f7fe);
+            color: #fff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        .links:hover {
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+        }
+        .calculation-section {
+            margin-top: 30px;
+        }
+        .calculation-section input {
+            margin: 5px;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .calculation-section button {
+            margin: 5px;
+            padding: 10px 20px;
+            background: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .calculation-section button:hover {
+            background: #45a049;
+        }
+        .metadata {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 6px;
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="container">
+        <h1>Welcome to Lab</h1>
+        <div class="nav-links">
+            <h:link class="links" outcome="displayDate" value="View Current Date" />
+            <h:link class="links" outcome="messageForm" value="Message Form" />
+            <h:link class="links" outcome="studentManagement" value="Student Management" />
+        </div>
+
+        <!-- Calculation Section -->
+        <div class="calculation-section">
+            <h2>Calculation Demonstration</h2>
+            <h:form>
+                <h:outputText value="Enter Value: " />
+                <h:inputText value="#{studentController.calculationValue}" />
+
+                <h:commandButton value="Add" action="#{studentController.performAddition}" />
+                <h:commandButton value="Subtract" action="#{studentController.performSubtraction}" />
+            </h:form>
+
+            <h3>Result: #{studentController.calculationResult}</h3>
+        </div>
+
+        <!-- Calculation Bean Metadata -->
+        <div class="metadata">
+            <h3>Calculation Bean Metadata:</h3>
+            <h:outputText value="#{studentController.calculationMetadata}" />
+        </div>
+    </div>
+</h:body>
+</html>

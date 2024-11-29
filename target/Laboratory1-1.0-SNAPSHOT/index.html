@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servlet Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            color: #f0f0f0;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #ffcc00;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        button {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #feb47b, #ff7e5f);
+        }
+        input[type="text"], input[type="number"] {
+            padding: 12px;
+            border-radius: 8px;
+            width: 220px;
+            margin: 8px 0;
+            border: none;
+            color: #333;
+        }
+        #result {
+            background-color: #1f1f1f;
+            color: #ffcc00;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+    </style>
+    <script>
+        async function sendRequest(url, method, data = null) {
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+            const response = await fetch(url, options);
+            const result = await response.text();
+            document.getElementById('result').innerHTML = result;
+        }
+
+        function postGreeting(){
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/greeting-servlet', 'POST')
+        }
+
+        function getTime() {
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/time-servlet', 'GET');
+        }
+
+        function getCounter() {
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/counter-servlet', 'GET');
+        }
+
+        function incrementCounter() {
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/counter-servlet', 'POST');
+        }
+
+        function setCounter() {
+            const value = document.getElementById('counterValue').value;
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/counter-servlet', 'PUT', { value: parseInt(value)});
+        }
+
+        function resetCounter() {
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/counter-servlet', 'DELETE');
+        }
+
+        function getInfo() {
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/info-servlet', 'GET');
+        }
+
+        function addInfo() {
+            const key = document.getElementById('infoKey').value;
+            const value = document.getElementById('infoValue').value;
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/info-servlet', 'POST', { key: key, value: value });
+        }
+
+        function updateInfo() {
+            const key = document.getElementById('infoKey').value;
+            const value = document.getElementById('infoValue').value;
+            sendRequest('http://localhost:8080/Laboratory1-1.0-SNAPSHOT/info-servlet', 'PUT', { key: key, value: value });
+        }
+    </script>
+</head>
+<body>
+<h1>Servlet Test Page</h1>
+
+<div class="servlet-section">
+    <h2>GreetingServlet</h2>
+    <button onclick="postGreeting()">Show Greeting</button>
+</div>
+
+<div class="servlet-section">
+    <h2>TimeServlet</h2>
+    <button onclick="getTime()">Show Time</button>
+</div>
+
+<div class="servlet-section">
+    <h2>CounterServlet</h2>
+    <button onclick="getCounter()">Get Counter</button>
+    <button onclick="incrementCounter()">Increment Counter</button>
+    <input type="number" id="counterValue" placeholder="Enter value">
+    <button onclick="setCounter()">Set Counter</button>
+    <button onclick="resetCounter()">Reset Counter</button>
+</div>
+
+<div class="servlet-section">
+    <h2>InfoServlet</h2>
+    <button onclick="getInfo()">Get Info</button>
+    <input type="text" id="infoKey" placeholder="Enter key">
+    <input type="text" id="infoValue" placeholder="Enter value">
+    <button onclick="addInfo()">Add Info</button>
+    <button onclick="updateInfo()">Update Info</button>
+</div>
+
+<h2>Result:</h2>
+<div id="result"></div>
+</body>
+</html>

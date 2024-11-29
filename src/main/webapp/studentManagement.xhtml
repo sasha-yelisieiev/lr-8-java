@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Student Management</title>
+    <style type="">
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #e0e0e0;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(to right, #2c3e50, #34495e);
+        }
+        .container {
+            background: #1c1c1c;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1, h2 {
+            color: #ecf0f1;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #2c3e50;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #555;
+            text-align: left;
+            color: #ecf0f1;
+        }
+        th {
+            background-color: #1abc9c;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            border: 1px solid #666;
+            border-radius: 4px;
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+        .btn {
+            background: linear-gradient(45deg, #1abc9c, #16a085);
+            color: #ecf0f1;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: linear-gradient(45deg, #16a085, #1abc9c);
+        }
+        .home-link, .link {
+            text-align: center;
+            color: #1abc9c;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-around;
+        }
+        .input-text:focus {
+            border-color: #1abc9c;
+            box-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
+        }
+        .user-count {
+            text-align: center;
+            font-weight: bold;
+            color: #1abc9c;
+            margin-bottom: 20px;
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="container">
+        <h1>Student Management</h1>
+
+        <div class="user-count">
+            Active Users: #{studentController.activeUsers}
+        </div>
+
+        <h2>Add New Student</h2>
+        <h:form>
+            <h:inputText value="#{studentController.newStudent.name}" placeholder="Name" required="true" />
+            <h:inputText value="#{studentController.newStudent.age}" placeholder="Age" required="true">
+                <f:convertNumber integerOnly="true" />
+            </h:inputText>
+            <h:inputText value="#{studentController.newStudent.major}" placeholder="Major" required="true" />
+            <h:commandButton value="Add Student" action="#{studentController.addStudentWithExecuteUpdate}" styleClass="btn">
+                <f:ajax execute="@form" render="@form :studentTable" />
+            </h:commandButton>
+        </h:form>
+
+        <h2>Filter Students</h2>
+        <h:form>
+            <h:outputLabel for="minAge" value="Min age:"/>
+            <h:inputText id="minAge" value="#{studentController.minAge}" />
+            <h:outputLabel for="maxAge" value="Max age:"/>
+            <h:inputText id="maxAge" value="#{studentController.maxAge}" />
+            <h:commandButton value="Filter by Age Range" action="#{studentController.filterByAgeRange}" styleClass="btn">
+                <f:ajax execute="@form" render=":studentTable" />
+            </h:commandButton>
+            <h:commandButton value="Reset Filter" action="#{studentController.resetFilter}" styleClass="btn">
+                <f:ajax render=":studentTable" />
+            </h:commandButton>
+        </h:form>
+
+        <h2>Get Top Students</h2>
+        <h:form>
+            <h:inputText value="#{studentController.topStudentsLimit}" placeholder="Limit" required="true">
+                <f:convertNumber integerOnly="true" />
+            </h:inputText>
+            <h:commandButton value="Get Top Students" action="#{studentController.loadTopStudents}" styleClass="btn">
+                <f:ajax execute="@form" render=":studentTable" />
+            </h:commandButton>
+        </h:form>
+
+        <h2>Find Students by Major (Case Insensitive)</h2>
+        <h:form>
+            <h:inputText value="#{studentController.selectedMajor}" placeholder="Major" required="true" />
+            <h:commandButton value="Find Students" action="#{studentController.findStudentsByMajorIgnoreCase}" styleClass="btn">
+                <f:ajax execute="@form" render=":studentTable" />
+            </h:commandButton>
+        </h:form>
+
+        <h2>Student List</h2>
+        <h:form id="studentTable">
+            <h:dataTable value="#{studentController.students}" var="student">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{student.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:inputText value="#{student.name}" size="10" styleClass="input-text" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Age</f:facet>
+                    <h:inputText value="#{student.age}" size="3" styleClass="input-text">
+                        <f:convertNumber integerOnly="true" />
+                    </h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Major</f:facet>
+                    <h:inputText value="#{student.major}" size="10" styleClass="input-text" />
+                </h:column>
+                <h:column styleClass="actions">
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="Update" action="#{studentController.updateStudent(student)}"
+                                     styleClass="btn">
+                        <f:ajax execute="@form" render="@form" />
+                    </h:commandButton>
+                    <h:commandButton value="Remove" action="#{studentController.removeStudent(student)}"
+                                     styleClass="btn">
+                        <f:ajax render="@form" />
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+        <h2>Student Full Names</h2>
+        <h:form>
+            <h:commandButton value="Load Full Names" action="#{studentController.loadStudentFullNames}" styleClass="btn">
+                <f:ajax render="fullNamesList" />
+            </h:commandButton>
+            <h:dataTable id="fullNamesList" value="#{studentController.studentFullNames}" var="fullName">
+                <h:column>
+                    <f:facet name="header">Full Name</f:facet>
+                    #{fullName}
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+        <div class="home-link">
+            <h:link styleClass="link" outcome="home" value="Back to Home" />
+        </div>
+        <div class="home-link">
+            <h:link styleClass="link" outcome="timerMessages" value="View Timer Messages" />
+        </div>
+    </div>
+</h:body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Display Current Date</title>
+    <style type="">
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #f0f0f0;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+        }
+        .container {
+            background-color: #333;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .date-display {
+            font-size: 26px;
+            color: #ffcc00;
+            background-color: #444;
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .home-link {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        .links {
+            background: linear-gradient(135deg, #ff5f6d, #ffc371);
+            color: #fff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        .links:hover {
+            background: linear-gradient(135deg, #ffc371, #ff5f6d);
+        }
+    </style>
+
+</h:head>
+<h:body>
+    <div class="container">
+        <h1>Current Date and Time</h1>
+        <p class="date-display">
+            <h:outputText value="#{dateBean.currentDate}" />
+        </p>
+        <div class="home-link">
+            <h:link class="links" outcome="home" value="Back to Home" />
+        </div>
+    </div>
+</h:body>
+</html>

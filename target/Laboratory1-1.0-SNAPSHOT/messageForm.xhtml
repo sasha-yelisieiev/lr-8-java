@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+  <title>Message Form</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      color: #f0f0f0;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #434343, #000000);
+    }
+    .container {
+      background-color: #2c2c2c;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    }
+    h1, h2 {
+      color: #ffcc00;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    label {
+      color: #ffcc00;
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      transition: transform 0.3s;
+    }
+    input[type="submit"]:hover {
+      transform: scale(1.05);
+    }
+    .message-display {
+      font-size: 20px;
+      background-color: #333;
+      padding: 20px;
+      color: #ffcc00;
+      text-align: center;
+      border-radius: 6px;
+    }
+  </style>
+</h:head>
+<h:body>
+  <div class="container">
+    <h1>Message Form</h1>
+    <h:form id="messageForm">
+      <h:outputLabel for="message" value="Enter a message:" />
+      <h:inputText id="message" value="#{messageBean.message}" required="true" validator="#{messageBean.validateMessage}">
+        <f:ajax event="blur" render="messageError" />
+      </h:inputText>
+      <h:message id="messageError" for="message" styleClass="error-message" />
+      <h:commandButton value="Set Message" action="#{messageBean.setMessage}">
+        <f:ajax execute="@form" render="@form messageDisplay" />
+      </h:commandButton>
+    </h:form>
+
+    <h2>Current Message:</h2>
+    <h:panelGroup id="messageDisplay">
+      <p class="message-display">
+        <h:outputText value="#{messageBean.message}" />
+      </p>
+    </h:panelGroup>
+    <div class="home-link">
+      <h:link class="links" outcome="home" value="Back to Home" />
+    </div>
+  </div>
+</h:body>
+</html>
